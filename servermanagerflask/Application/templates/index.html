@@ -1,0 +1,33 @@
+
+{% extends "layout.html" %}
+
+
+{% block content %}       
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logged in as:</div>
+                        Start Bootstrap
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Server Info</h1>
+
+                        <h1>Welcome to the server side</h1>
+                        
+                         <!-- Testing for the if statement -->
+                        {% if login %} 
+                        <h3>Let's get started</h3>
+                        {% else %}
+                        <p>Already registered? <a href="{{ url_for('logout') }}">Login</a></p>
+                        {% endif %}
+
+                        <h4>Hello </h4>
+                        <p>bom</p>
+                        <p>bom bom</p>
+                    </div>
+            </div>
+
+{% endblock %}
+
