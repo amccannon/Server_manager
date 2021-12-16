@@ -3,12 +3,30 @@
 from Application import app
 from flask import render_template
 
+from Application.wtfform_fields import RegisterNewUser
+
 
 
 #routes from now 
 
-@app.route("/")
+@app.route("/", methods=['GET','POST'])
 @app.route("/index")
+
+#---------------------------Login and Registering(new users----------------------------------------------------
+#login
+@app.route("/login")
+def login():
+    return render_template("login_test.html")
+
+#registration
+@app.route("/register", methods=['GET','POST'])
+def register_test():
+
+    reg_form = RegisterNewUser()
+
+    return render_template("register_test.html", form=reg_form)
+
+#-----------------------------------------------------------------------------------------------------
 
 #main page
 @app.route("/home")
@@ -35,22 +53,38 @@ def logout():
 #servers
 @app.route("/servers")
 def servers():
-    return render_template("servers.html")
+
+    serverData = [{"serverID":"someServerName","nameID":"Mathew","teamID":"The Bucaneers","healthID":"1234"},
+    {"serverID":"someServerName","nameID":"Andrew","teamID":"Flags","healthID":"1235"},
+    {"serverID":"someServerName","nameID":"Andrew","teamID":"Flags","healthID":"1236"},
+    {"serverID":"someServerName","nameID":"Andrew","teamID":"Flags","healthID":"1237"}]
+    
+    #print(serverData)
+    return render_template("servers.html", serverData=serverData)
 
 #teams
 @app.route("/teams")
 def teams():
-    return render_template("teams.html")
+
+    teamsData = [{"teamnameID":"someServerName","teamadminID":"Mathew","numberofmembersID":"4","serverID":"1234"}]
+    
+    #print(teamsData)
+    return render_template("teams.html", teamsData=teamsData)
 
 #terminal
-@app.route("/terminal")
+@app.route("/Jobs")
 def terminal():
-    return render_template("terminal.html")
+
+    jobsData = [{"teamnameID":"someServerName","jobsID":"This job"}]
+    return render_template("jobs.html", jobsData=jobsData)
 
 #log out
 @app.route("/alerts")
 def alerts():
-    return render_template("alerts.html")
+
+    alertsData = [{"serverID":"someServerName","alertsID":"This server is in hight alert"}]
+
+    return render_template("alerts.html", alertsData=alertsData)
 
 #chat
 @app.route("/chat")

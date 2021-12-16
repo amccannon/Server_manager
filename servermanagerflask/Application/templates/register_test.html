@@ -1,0 +1,75 @@
+
+    {% extends "layout.html" %}
+   
+    {% block content %}
+    <h2>Registering New User</h2>
+
+    <div class="sb-sidenav-footer">
+        <div class="small">Logged in as:</div>
+        Start Bootstrap
+    </div>
+        </nav>
+            </div>
+                <div id="layoutSidenav_content">
+                <main>
+                <form>
+                    <!-- First name -->
+                   <div>
+
+                    {{ form.firstname(class_='form-control', 
+                    placeholder='First Name', autocomplete='off',
+                    autofocus=true)}}
+
+                   </div>
+                   <!-- Last name -->
+                   <div>
+
+                    {{ form.lastname(class_='form-control', 
+                    placeholder='Last Name', autocomplete='off',
+                    autofocus=true)}}
+
+                   </div>
+                    <!-- Email -->
+                   <div>
+
+                    {{ form.email(class_='form-control', 
+                    placeholder='Email', autocomplete='off',
+                    autofocus=true)}}
+
+                   </div>
+                    <!-- Password -->
+                   <div>
+
+                    {{ form.password(class_='form-control', 
+                    placeholder='Password', autocomplete='off',
+                    autofocus=true)}}
+
+                   </div>
+                   <!-- Password Confirmation -->
+                   <div>
+
+                    {{ form.confirm_pswd(class_='form-control', 
+                    placeholder='Confirm Password', autocomplete='off',
+                    autofocus=true)}}
+
+                   </div>
+                   <!-- Team -->
+                   <div>
+
+                    {{ form.assigned_team(class_='form-control', 
+                    placeholder='Team', autocomplete='off',
+                    autofocus=true)}}
+
+                   </div>
+
+                <div>
+                    <input type="submit" value="Create">
+
+                </div>
+
+                {{ form.csrf_token }}
+
+                </form>
+            </div>
+        </div>
+    {% endblock %}

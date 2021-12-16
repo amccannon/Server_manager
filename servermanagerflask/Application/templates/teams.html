@@ -10,16 +10,41 @@
         </div>
             <div id="layoutSidenav_content">
             <main>
-                <h1 class="mt-4">Welcome to the Teams</h1>
-    
-                <!-- Testing for the if statement teams-->
-    
+                <h1 class="mt-4">Welcome to the Teams Page</h1>
 
-                <h4>Teams </h4>
-    
+                <!-- Teams stuff-->
 
-                <h4>Sup </h4>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Team</th>
+                        <th scope="col">TeamAdmin</th>
+                        <th scope="col">Members</th>
+                        <th scope="col">Server</th>
+                    </tr>
+                    </thead>
 
+                    <tbody>
+            
+                    <!-- Construct the servers 
+                    Adding the data dynamically -->
+
+                    {% for data in teamsData %}
+                    <tr>
+                        <td scope='row'>{{ data["teamnameID"] }}</td>
+                        <td>{{ data["teamadminID"] }}</td>
+                        <td>{{ data["numberofmembersID"] }}</td>
+                        <td>{{ data["serverID"] }}</td>
+                        <td>
+                            <button>Enter Team</button>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
     </div>
 </div>
            

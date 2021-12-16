@@ -10,27 +10,40 @@
         </div>
             <div id="layoutSidenav_content">
             <main>
-                <h1 class="mt-4">Welcome to the Alerts Page</h1>
+                <h1 class="mt-4">Notification Page</h1>
     
                 <!-- Testing for the if statement teams-->
     
 
-                <h4>Alarm </h4>
-
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th scope="col">Course ID</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Credits</th>
-                        <th scope="col">Term</th>
-                        <th scope="col">Enroll</th>
+                        <th scope="col">Server</th>
+                        <th scope="col">HighRisk</th>
                     </tr>
                     </thead>
-                  </table>
+
+                    <tbody>
+            
+                    <!-- Alerts Page
+                    Adding the data dynamically -->
+
+                    {% for data in alertsData %}
+                    <tr>
+                        <td scope='row'>{{ data["serverID"] }}</td>
+                        <td>{{ data["alertsID"] }}</td>
+                        <td>
+                            <button>Open</button>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
                 </div>
             </main>
-            </div>        
+        </div>        
            
 {% endblock %}

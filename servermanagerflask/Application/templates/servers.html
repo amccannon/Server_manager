@@ -6,33 +6,45 @@
     <div class="small">Logged in as:</div>
     Start Bootstrap
 </div>
-    </nav>
+    <nav>
         </div>
             <div id="layoutSidenav_content">
-            <main>
-                <h1 class="mt-4">Servers Page</h1>
-    
-                <!-- Testing for the if statement teams-->
-    
+                <main>
+                    <h1 class="mt-4">Servers Page</h1>
+        
+                    <!-- Testing for the if statement teams-->
 
-                <h4>Servers </h4>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">Server</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Team</th>
+                                <th scope="col">Health</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                    
+                            <!-- Construct the servers 
+                            Adding the data dynamically -->
 
-                <h4>This are some servers </h4>
+                            {% for data in serverData %}
+                            <tr>
+                                <td scope='row'>{{ data["serverID"] }}</td>
+                                <td>{{ data["nameID"] }}</td>
+                                <td>{{ data["teamID"] }}</td>
+                                <td>{{ data["stateID"] }}</td>
+                                <td>{{ data["healthID"] }}</td>
+                                <td>
+                                    <button>Open</button>
+                                </td>
+                            </tr>
 
-
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th scope="col">Server</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Team</th>
-                        <th scope="col">ID</th>
-                    </tr>
-                    </thead>
-                </table>
-                   
-
-    </div>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                </main>
+            </div>
 </div>
            
 {% endblock %}
