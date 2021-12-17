@@ -1,7 +1,9 @@
+{% from 'form_helper.html' import displayField %}
 
-    {% extends "layout.html" %}
-   
-    {% block content %}
+{% extends "layout.html" %}
+
+{% block content %}
+
     <h2>Registering New User</h2>
 
     <div class="sb-sidenav-footer">
@@ -12,59 +14,20 @@
             </div>
                 <div id="layoutSidenav_content">
                 <main>
-                <form>
-                    <!-- First name -->
-                   <div>
+                <form action="{{ url_for('success_user') }}", method=['POST', 'GET']>
 
-                    {{ form.firstname(class_='form-control', 
-                    placeholder='First Name', autocomplete='off',
-                    autofocus=true)}}
+                <!-- Using macros to make it ieasier for the entries -->
+                   {{ displayField(form.firstname, 'First Name', autocomplete="off", autofocus=true)}}
+                   {{ displayField(form.lastname, 'Last Name', autocomplete="off", autofocus=true)}}
+                   {{ displayField(form.email, 'Email', autocomplete="off", autofocus=true)}}
+                   {{ displayField(form.password, 'Password')}}
+                   {{ displayField(form.confirm_pswd, 'Confirm Password')}}
+                   {{ displayField(form.assigned_team, 'Team')}}
 
-                   </div>
-                   <!-- Last name -->
-                   <div>
 
-                    {{ form.lastname(class_='form-control', 
-                    placeholder='Last Name', autocomplete='off',
-                    autofocus=true)}}
-
-                   </div>
-                    <!-- Email -->
-                   <div>
-
-                    {{ form.email(class_='form-control', 
-                    placeholder='Email', autocomplete='off',
-                    autofocus=true)}}
-
-                   </div>
-                    <!-- Password -->
-                   <div>
-
-                    {{ form.password(class_='form-control', 
-                    placeholder='Password', autocomplete='off',
-                    autofocus=true)}}
-
-                   </div>
-                   <!-- Password Confirmation -->
-                   <div>
-
-                    {{ form.confirm_pswd(class_='form-control', 
-                    placeholder='Confirm Password', autocomplete='off',
-                    autofocus=true)}}
-
-                   </div>
-                   <!-- Team -->
-                   <div>
-
-                    {{ form.assigned_team(class_='form-control', 
-                    placeholder='Team', autocomplete='off',
-                    autofocus=true)}}
-
-                   </div>
-
+                <!-- We have added the button on the form now just to add it here-->
                 <div>
-                    <input type="submit" value="Create">
-
+                {{ form.create_user_button }}
                 </div>
 
                 {{ form.csrf_token }}
@@ -72,4 +35,5 @@
                 </form>
             </div>
         </div>
-    {% endblock %}
+        
+{% endblock %}

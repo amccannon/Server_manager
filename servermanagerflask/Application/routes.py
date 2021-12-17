@@ -24,7 +24,17 @@ def register_test():
 
     reg_form = RegisterNewUser()
 
+    # validatin, and return true, if false it will give us
+    if reg_form.validate_on_submit():
+        return "Good"
+
     return render_template("register_test.html", form=reg_form)
+
+
+#succesfull created a user
+@app.route("/success_user")
+def success_user():
+    return render_template("success_user.html")
 
 #-----------------------------------------------------------------------------------------------------
 
