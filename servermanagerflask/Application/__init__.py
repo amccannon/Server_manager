@@ -57,8 +57,8 @@ class User(db.Model):
 
 
 
-
-t_host = "postgresql+psycopg2://main-database.chkovmh0wpxg.us-east-2.rds.amazonaws.com/postgres"
+t_host = "main-database.chkovmh0wpxg.us-east-2.rds.amazonaws.com"
+#t_host = "postgresql+psycopg2://main-database.chkovmh0wpxg.us-east-2.rds.amazonaws.com:5432"
 t_port = "5432"
 t_dbname = "postgres"
 t_user = "postgres"
