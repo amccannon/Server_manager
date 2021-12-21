@@ -1,9 +1,11 @@
 #routing 
 
 from Application import app
+from Application import models
 from flask import render_template
+from flask_sqlalchemy import SQLAlchemy
 
-from Application.wtfform_fields import RegisterNewUser
+from Application.wtfform_fields import LoginForm, RegisterNewUser
 
 
 
@@ -16,17 +18,46 @@ from Application.wtfform_fields import RegisterNewUser
 #login
 @app.route("/login")
 def login():
-    return render_template("login_test.html")
 
+    
+
+    login_form = LoginForm()
+
+    #allow login if works
+
+    if login_form.validate_on_submit():
+        return "Logged in"
+
+
+    return render_template("login_test.html", form=login_form)
 #registration
 @app.route("/register", methods=['GET','POST'])
+
 def register_test():
 
     reg_form = RegisterNewUser()
 
     # validatin, and return true, if false it will give us
     if reg_form.validate_on_submit():
-        return "Good"
+        firstname = reg_form.firstname.data
+        lastname = reg_form.lastname.data
+        password = reg_form.password.data
+
+        # Checking if the usernames exist
+
+        user_object = models.User.query.filter_by(firstname=firstname).first()
+        if user_object:
+            return "It is already in the database!"
+
+
+        #Adding user to database
+        user = models.User(firstname=firstname, password=password)
+        models.db.session.add(user)
+        models.db.session.commit()
+
+        return "Inserted into the DB"
+
+
 
     return render_template("register_test.html", form=reg_form)
 

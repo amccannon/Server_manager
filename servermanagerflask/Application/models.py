@@ -2,9 +2,9 @@
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 
-db = SQLAlchemy
+
+db = SQLAlchemy()
 
 #define a class for the model
 class User(db.Model):
@@ -21,13 +21,15 @@ class User(db.Model):
     password = db.Column(db.String(25), unique=True, nullable=False) #password
     team = db.Column(db.Integer, unique=True, nullable=False) #team
 
-    db.create_all()
-    
+
+ 
 
 
-    #def __init__(self, firstname: str, lastname: str, email: str, password: str, team: int):
-    #    self.firstname = firstname
-    #   self.lastname = lastname
-    #    self.email = email
-    #    self.password = password
-    #    self.team = team
+    def __init__(self, firstname: str, lastname: str, email: str, password: str, team: int):
+        self.firstname = firstname
+        self.lastname = lastname
+        self.email = email
+        self.password = password
+        self.team = team
+
+  

@@ -4,37 +4,32 @@
 
 # now we have access to the flask application
 
-import os
+from Application import models
 from flask import Flask
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
 import psycopg2 #database connection
 from wtforms import *
+
+
 
 # current application or module being rendered
 app = Flask(__name__)
 app.secret_key = 'replace later'
 
-# - POSTGRES_USER= postgres
-# - POSTGRES_PW= testing1
-# - POSTGRES_URL= main-database.chkovmh0wpxg.us-east-2.rds.amazonaws.com
-# - POSTGRES_DB= Login/Info
 
-# this can be the root directory (decorators using these different types of urls)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Configuring the database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:testing1@main-database.chkovmh0wpxg.us-east-2.rds.amazonaws.com:5432/Login_info'
+app.debug = True
 
 # importing routes from Application
 from Application import routes
 
 # database connection
-app.config['SQLALCHEMY_DATABASE_URI'] = "main-database.chkovmh0wpxg.us-east-2.rds.amazonaws.com"
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-#database and migrate
-db = SQLAlchemy()
-db.init_app(app)
-migrate = Migrate(app, db)
-
+#database 
+models.db.init_app(app)
 
 
 

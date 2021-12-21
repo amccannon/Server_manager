@@ -1,9 +1,24 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms import validators
-from wtforms.validators import InputRequired, Length, EqualTo
-from Application import app
+from wtforms.validators import Email, InputRequired, Length, EqualTo, ValidationError
+from Application import app, models
 
+
+def invalid_credentials(form, field):
+    """Email and password checker"""
+
+    email_entered = form.firstname.data
+    password_entered = field.data 
+
+
+    #Check email is valid
+
+    user_object = models.User.query.filter_by(email=email.data).first()
+    if user_object in None:
+        raise ValidationError("Email or password is incorrect")
+    elif password_entered != user_object.password:
+        raise ValidationError("Username or passowrd is not correct")
 
 #this code is used for creating a password and login using wtforms:
 class RegisterNewUser(FlaskForm):
@@ -37,6 +52,13 @@ class RegisterNewUser(FlaskForm):
 
 
     create_user_button = SubmitField('Create')
+
+
+class LoginForm(FlaskForm):
+    """Login Form"""
+
+    email = StringField('email_label', validators=[InputRequired(message="Username required")])
+    password = StringField('email_label', validators=[InputRequired(message="Password required"), invalid_credentials])
 
 
 
