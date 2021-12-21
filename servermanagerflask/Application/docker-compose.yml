@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  aws-ecs-servermanager:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+      args:
+        - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+        - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+        - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+        - FLASK_SECRET_KEY=${FLASK_SECRET_KEY}
+        - POSTGRES_USER= postgres
+        - POSTGRES_PW= testing1
+        - POSTGRES_URL= main-database.chkovmh0wpxg.us-east-2.rds.amazonaws.com
+        - POSTGRES_DB= Login/Info
+    container_name: aws-ecs-servermanager
+    ports:
+      - 3000:5000
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - FLASK_SECRET_KEY=${FLASK_SECRET_KEY}
+      - POSTGRES_USER= postgres
+      - POSTGRES_PW= testing1
+      - POSTGRES_URL= main-database.chkovmh0wpxg.us-east-2.rds.amazonaws.com
+      - POSTGRES_DB= Login/Info
+    # bridge - connect to docker container from localhost
+    network_mode: bridge
