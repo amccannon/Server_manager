@@ -19,17 +19,17 @@ class User(db.Model):
     lastname = db.Column(db.String(25), unique=True, nullable=False) #lastname name
     email = db.Column(db.String(25), unique=True, nullable=False) #email
     password = db.Column(db.String(25), unique=True, nullable=False) #password
-    team = db.Column(db.Integer, unique=True, nullable=False) #team
+    teams = db.Column(db.Integer, unique=True, nullable=False) #team
 
 
  
 
 
-    def __init__(self, firstname: str, lastname: str, email: str, password: str, team: int):
-        self.firstname = firstname
-        self.lastname = lastname
-        self.email = email
-        self.password = password
-        self.team = team
+    #def __init__(self, firstname: str, lastname: str, email: str, password: str, team: int):
+    #    self.firstname = firstname
+    #    self.lastname = lastname
+    #    self.email = email
+    #    self.password = password
+    #    self.team = team
 
   

@@ -1,24 +1,24 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms import validators
-from wtforms.validators import Email, InputRequired, Length, EqualTo, ValidationError
+from wtforms.validators import InputRequired, Length, EqualTo, ValidationError
 from Application import app, models
 
 
 def invalid_credentials(form, field):
     """Email and password checker"""
 
-    email_entered = form.firstname.data
+    email_entered = form.email.data
     password_entered = field.data 
 
 
-    #Check email is valid
+    # Check email is valid
 
-    user_object = models.User.query.filter_by(email=email.data).first()
-    if user_object in None:
-        raise ValidationError("Email or password is incorrect")
-    elif password_entered != user_object.password:
-        raise ValidationError("Username or passowrd is not correct")
+    #user_object = models.User.query.filter_by(email=email.data).first()
+    #if user_object in None:
+    #    raise ValidationError("Email or password is incorrect")
+    #elif password_entered != user_object.password:
+    #    raise ValidationError("Username or passowrd is not correct")
 
 #this code is used for creating a password and login using wtforms:
 class RegisterNewUser(FlaskForm):
@@ -53,12 +53,21 @@ class RegisterNewUser(FlaskForm):
 
     create_user_button = SubmitField('Create')
 
+    # validating the email
+    def validate_firstname(self, email):
+        user_object = models.User.query.filter_by(email=email.data).first()
+        if user_object:
+            raise ValidationError("email already exists")
+            
+
 
 class LoginForm(FlaskForm):
     """Login Form"""
 
     email = StringField('email_label', validators=[InputRequired(message="Username required")])
-    password = StringField('email_label', validators=[InputRequired(message="Password required"), invalid_credentials])
+    password = StringField('password_label', validators=[InputRequired(message="Password required"), invalid_credentials])
+    confirm_pswd = StringField('email_label', validators=[InputRequired(message="Password required"), invalid_credentials])
+    login_button = SubmitField('Login')
 
 
 

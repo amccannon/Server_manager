@@ -16,20 +16,22 @@ from Application.wtfform_fields import LoginForm, RegisterNewUser
 
 #---------------------------Login and Registering(new users----------------------------------------------------
 #login
-@app.route("/login")
-def login():
+#@app.route("/login", methods=['GET', 'POST'])
+#def login():
 
-    
-
-    login_form = LoginForm()
+#    login_form = LoginForm()
 
     #allow login if works
 
-    if login_form.validate_on_submit():
-        return "Logged in"
+#    if login_form.validate_on_submit():
+#        #return "Logged in"
+#        return render_template("index.html", login=False)
 
 
-    return render_template("login_test.html", form=login_form)
+
+#    return render_template("login_test.html", form=login_form)
+
+
 #registration
 @app.route("/register", methods=['GET','POST'])
 
@@ -37,21 +39,23 @@ def register_test():
 
     reg_form = RegisterNewUser()
 
-    # validatin, and return true, if false it will give us
+    # validatin and should add to the database
     if reg_form.validate_on_submit():
         firstname = reg_form.firstname.data
         lastname = reg_form.lastname.data
+        email = reg_form.email.data
         password = reg_form.password.data
+        teams = reg_form.assigned_team.data
 
-        # Checking if the usernames exist
+        # Check if the email exists
+        user_object = models.User.query.filter_by(email=email).first()
 
-        user_object = models.User.query.filter_by(firstname=firstname).first()
         if user_object:
-            return "It is already in the database!"
+            return "Someone is using this email"
 
 
         #Adding user to database
-        user = models.User(firstname=firstname, password=password)
+        user = models.User(firstname=firstname,lastname=lastname,email=email, password=password, teams=teams)
         models.db.session.add(user)
         models.db.session.commit()
 
@@ -63,9 +67,9 @@ def register_test():
 
 
 #succesfull created a user
-@app.route("/success_user")
-def success_user():
-    return render_template("success_user.html")
+#@app.route("/success_user")
+#def success_user():
+#    return render_template("success_user.html")
 
 #-----------------------------------------------------------------------------------------------------
 

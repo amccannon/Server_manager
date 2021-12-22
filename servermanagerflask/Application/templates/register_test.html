@@ -14,7 +14,7 @@
             </div>
                 <div id="layoutSidenav_content">
                 <main>
-                <form action="{{ url_for('success_user') }}", method=['POST', 'GET']>
+                <form action="{{ url_for('register_test') }}", method='POST'>
 
                 <!-- Using macros to make it ieasier for the entries -->
                    {{ displayField(form.firstname, 'First Name', autocomplete="off", autofocus=true)}}
