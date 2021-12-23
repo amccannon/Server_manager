@@ -10,14 +10,58 @@
         </div>
             <div id="layoutSidenav_content">
             <main>
-                <h1 class="mt-4">Chat Box</h1>
-    
-                <!-- Testing for the if statement teams-->
-    
+            <body>
+            <!-- Navigation bar -->
+                <nav>
+                    
 
-                <h4>Chat </h4>
 
-                
+
+
+                </nav>
+                <!-- Room Selection Side bar -->
+                <div id="main-section">
+                        <nav id="sidebar">
+
+
+
+                        </nav>
+                    <!-- Message area-->
+                    <div id="rightside-pannel">
+                    <!-- Section for displaying messages-->
+                        <div class="display-message-section">
+
+
+                        </div>
+                    <!-- Input area -->
+                        <div id="input-area">
+                            <input type="text" id="user_message" placeholder="Type here ..." autocomplete="off">
+                            <button type="button" name="send_message">SEND</button>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+                <!-- Getting the first name -->
+
+                <script type="text/javascript">
+                    const firstname = `{{ firstname }}`;
+                </script>
+
+                <!-- SocketIO JS-->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+
+                <!-- Custom SocketIO JS-->
+
+                <script src="{{ url_for('static', filename='scripts_yes/socketio.js') }}">
+
+                    
+                </script>
+            </body>    
                 </div>
             </main>
             </div>        

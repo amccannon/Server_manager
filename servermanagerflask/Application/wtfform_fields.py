@@ -1,8 +1,11 @@
+from flask.sessions import NullSession
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms import validators
 from wtforms.validators import InputRequired, Length, EqualTo, ValidationError
 from Application import app, models
+from passlib.hash import pbkdf2_sha256
+
 
 
 def invalid_credentials(form, field):
@@ -13,12 +16,12 @@ def invalid_credentials(form, field):
 
 
     # Check email is valid
+    user_object = models.User.query.filter_by(email=email_entered).first()
+    if user_object == None:
+        raise ValidationError("Email or password is incorrect")
+    elif not pbkdf2_sha256.verify(password_entered, user_object.password):
+        raise ValidationError("Email or password is incorrect")
 
-    #user_object = models.User.query.filter_by(email=email.data).first()
-    #if user_object in None:
-    #    raise ValidationError("Email or password is incorrect")
-    #elif password_entered != user_object.password:
-    #    raise ValidationError("Username or passowrd is not correct")
 
 #this code is used for creating a password and login using wtforms:
 class RegisterNewUser(FlaskForm):
@@ -48,26 +51,29 @@ class RegisterNewUser(FlaskForm):
     EqualTo('password', message="Passwords must match")])
 
 
-    assigned_team = StringField('assigned_team')
+    teams = StringField('teams')
 
 
     create_user_button = SubmitField('Create')
 
-    # validating the email
-    def validate_firstname(self, email):
+    # validating the email with a custom Validator 
+    def validate_email(self, email):
         user_object = models.User.query.filter_by(email=email.data).first()
         if user_object:
-            raise ValidationError("email already exists")
+            raise ValidationError("Email already exists. Select a different email.")
+
+    #validating on teams with a custom Validator
+    def validate_teams(self, teams):
+        user_object = models.User.query.filter_by(teams=teams.data).first()
+        if user_object:
+            raise ValidationError("Tean already exists. Add to a different team.")
             
 
 
 class LoginForm(FlaskForm):
     """Login Form"""
 
-    email = StringField('email_label', validators=[InputRequired(message="Username required")])
+    email = StringField('email_label', validators=[InputRequired(message="Email required")])
     password = StringField('password_label', validators=[InputRequired(message="Password required"), invalid_credentials])
-    confirm_pswd = StringField('email_label', validators=[InputRequired(message="Password required"), invalid_credentials])
     login_button = SubmitField('Login')
-
-
 

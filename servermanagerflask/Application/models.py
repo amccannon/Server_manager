@@ -2,12 +2,14 @@
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 
 
 db = SQLAlchemy()
 
 #define a class for the model
-class User(db.Model):
+#adding a UserMixin -> functionalities regarding the flask login -> see documentation
+class User(UserMixin, db.Model):
     """User model"""
 
     #give the table a name

@@ -9,11 +9,10 @@
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <h3></h3>
-             <form action="{{ url_for('login') }}", method='GET'>
+             <form action="{{ url_for('login') }}", method='POST'>
                 
-               {{ displayField(form.email, "Email", autocomplete="off", autofocus=true) }}
+                {{ displayField(form.email, "Email", autocomplete="off", autofocus=true) }}
                 {{ displayField(form.password, "Password") }}
-                {{ displayField(form.confirm_pswd, "Retype Password") }}
 
                 <div>
                 {{ form.login_button }} 

@@ -1,0 +1,20 @@
+{% from 'form_helper.html' import displayField %}
+{% extends "layout_for_login.html" %}
+   
+
+{% block content %}
+
+    <h1>Logout</h1>
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h3></h3>
+            <h1>Welcome to the server side</h1>
+                        
+            <!-- Testing for the login -->
+
+           <p>Click here to Login  <a href="{{ url_for('login') }}">Login</a></p>
+
+        </div>
+    </div>
+ {% endblock %}
