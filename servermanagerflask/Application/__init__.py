@@ -4,6 +4,7 @@
 
 # now we have access to the flask application
 
+from time import localtime,strftime
 from Application import models
 from flask import Flask
 # I will be using sha 256 encryption
@@ -11,7 +12,7 @@ from passlib.hash import pbkdf2_sha256
 import psycopg2 #database connection
 from wtforms import *
 from flask_login import login_manager, login_user, current_user
-from flask_socketio import SocketIO, send, emit
+from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
 
 
@@ -24,7 +25,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 #Instantiate Flask-SocketIO
 socketio = SocketIO(app)
-
+ROOMS = ["support", "team_room"]
 
 # Configuring the database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:testing1@main-database.chkovmh0wpxg.us-east-2.rds.amazonaws.com:5432/Login_info'
@@ -61,15 +62,27 @@ def message(data):
     #for now
     print(f"\n\n{data}\n\n")
 
+    room = data.get('room')
+    #broadcast the message to the connected clients, on event bucket clients (issue with room=data('room'))
+    send({'msg': data['msg'], 'firstname': data['firstname'], 'timestamp': strftime('%b-%d %I:%M %p', localtime())})
+    #current_user.firstname  
 
-    #broadcast the message to the connected clients, on event bucket clients
-    send(data)
-    
+# Joining a room
+@socketio.on('join')
+def join(data):
 
-    #braodcasting a message to some custom event
-    #emit('some-event', 'this is a custom event message')
+    #Getting a user to join a room
+    join_room(data['room'])
+    send({'msg': data['firstname'] + " has joined the " + data['room'] + "room."}, room=data['room'])
 
+# Leaving a room
 
+@socketio.on('leave')
+def leave(data):
+
+    #Getting a user to join a room
+    leave_room(data['room'])
+    send({'msg': data['firstname'] + " has left the " + data['room'] + "room."}, room=data['room'])
 
 
 #t_host = "main-database.chkovmh0wpxg.us-east-2.rds.amazonaws.com"

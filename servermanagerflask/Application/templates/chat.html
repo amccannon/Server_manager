@@ -1,5 +1,4 @@
 {% extends "layout.html" %}
-
 {% block content %}
 
 <div class="sb-sidenav-footer">
@@ -9,7 +8,15 @@
     </nav>
         </div>
             <div id="layoutSidenav_content">
-            <main>
+            <main> 
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Sup</title>
+
+    </head>
             <body>
             <!-- Navigation bar -->
                 <nav>
@@ -22,21 +29,24 @@
                 <!-- Room Selection Side bar -->
                 <div id="main-section">
                         <nav id="sidebar">
+                            <H4>Sessions</H4>
 
-
+                            {% for room in rooms %}
+                                <p id="select-room">{{ room | title }}</p>
+                            {% endfor %}
 
                         </nav>
                     <!-- Message area-->
                     <div id="rightside-pannel">
                     <!-- Section for displaying messages-->
-                        <div class="display-message-section">
+                        <div id="display-message-section">
 
 
                         </div>
                     <!-- Input area -->
                         <div id="input-area">
                             <input type="text" id="user_message" placeholder="Type here ..." autocomplete="off">
-                            <button type="button" name="send_message">SEND</button>
+                            <button type="button" id="send_message">SEND</button>
 
 
                         </div>
@@ -46,7 +56,7 @@
                 </div>
 
 
-                <!-- Getting the first name -->
+                <!-- Getting the names -->
 
                 <script type="text/javascript">
                     const firstname = `{{ firstname }}`;
@@ -57,7 +67,7 @@
 
                 <!-- Custom SocketIO JS-->
 
-                <script src="{{ url_for('static', filename='scripts_yes/socketio.js') }}">
+                <script src="{{ url_for('static', filename='scripts/socketio.js') }}">
 
                     
                 </script>
@@ -65,5 +75,5 @@
                 </div>
             </main>
             </div>        
-           
+</html>       
 {% endblock %}

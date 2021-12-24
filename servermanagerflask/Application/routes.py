@@ -2,7 +2,7 @@
 
 from flask_login.utils import login_user, logout_user
 from werkzeug.wrappers import request
-from Application import app
+from Application import ROOMS, app
 from Application import models
 from flask import render_template, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
@@ -186,7 +186,7 @@ def chat():
     #    flash('Please login to use the chat', 'danger')
     #    return "Please log in before accessing the site"
     #return render_template("chat.html")
-    return render_template("chat.html", firstname=current_user.firstname)
+    return render_template("chat.html", firstname=current_user.firstname, rooms=ROOMS)
 
 # Documentation
 
