@@ -4,6 +4,17 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 
+from flask_login.utils import login_user, logout_user
+from werkzeug.wrappers import request
+from Application import ROOMS, app
+from Application import models
+from flask import render_template, redirect, url_for, flash
+from flask_sqlalchemy import SQLAlchemy
+from passlib.hash import pbkdf2_sha256
+
+from Application.wtfform_fields import LoginForm, RegisterNewUser
+from flask_login import login_manager, login_user, current_user, login_required, logout_user
+
 
 db = SQLAlchemy()
 
@@ -35,3 +46,10 @@ class User(UserMixin, db.Model):
     #    self.team = team
 
   
+@app.route("/teams", methods=['POST', 'GET'])
+@login_required
+def teams():
+
+    members=db.execute("SELECT * FROM members ")
+    # print(teamsData)
+    return render_template("members.html", members=members)

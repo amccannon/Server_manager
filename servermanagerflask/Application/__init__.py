@@ -25,7 +25,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 #Instantiate Flask-SocketIO
 socketio = SocketIO(app)
-ROOMS = ["support", "team room"]
+ROOMS = ["support", "team", "main"]
 
 # Configuring the database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:testing1@main-database.chkovmh0wpxg.us-east-2.rds.amazonaws.com:5432/Login_info'
@@ -64,7 +64,7 @@ def message(data):
 
     room = data.get('room')
     #broadcast the message to the connected clients, on event bucket clients (issue with room=data('room'))
-    send({'msg': data['msg'], 'firstname': data['firstname'], 'timestamp': strftime('%b-%d %I:%M %p', localtime())})
+    send({'msg': data['msg'], 'firstname': data['firstname'], 'timestamp': strftime('%b-%d %I:%M %p', localtime())}, room=data['room'])
     #current_user.firstname  
 
 #-----------------------------------Joining and Leaving a Room-----------------------------
@@ -74,7 +74,7 @@ def join(data):
 
     #Getting a user to join a room
     join_room(data['room'])
-    send({'msg': data['firstname'] + " has joined the " + data['room'] + "room."}, room=data['room'])
+    send({'msg': data['firstname'] + " has joined the " + data['room'] + " room."}, room=data['room'])
 
 # Leaving a room
 
@@ -83,7 +83,7 @@ def leave(data):
 
     #Getting a user to join a room
     leave_room(data['room'])
-    send({'msg': data['firstname'] + " has left the " + data['room'] + "room."}, room=data['room'])
+    send({'msg': data['firstname'] + " has left the " + data['room'] + " room."}, room=data['room'])
 
 
 #t_host = "main-database.chkovmh0wpxg.us-east-2.rds.amazonaws.com"

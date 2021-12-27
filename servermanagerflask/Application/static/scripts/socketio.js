@@ -1,4 +1,4 @@
-
+//Client Side
 // Adding just a simple event listing
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     var socket = io.connect('http://' + document.domain + ':' + location.port);
 
 
-    let room;
+    let room = "Main";
+    joinRoom("Main");
 
 
     //Message event, prints the message to the console/Displaying messages
@@ -18,12 +19,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const span_timestamp = document.createElement('span');
         // line breaks (custom)
         const br = document.createElement('br');
-        // access to the firstname
-        span_firstname.innerHTML = data.firstname;
-        span_timestamp.innerHTML = data.timestamp;
-        // to access the message text
-        p.innerHTML = span_firstname.outerHTML+ data.msg + br.outerHTML + span_timestamp.outerHTML;
-        document.querySelector('#display-message-section').append(p);
+
+
+        // removing the extra firstname
+        if (data.firstname){
+
+            // access to the firstname
+            span_firstname.innerHTML = data.firstname;
+            span_timestamp.innerHTML = data.timestamp;
+            // to access the message text
+            p.innerHTML = span_firstname.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML;
+            document.querySelector('#display-message-section').append(p);
+
+        } else {
+            printSysMsg(data.msg);
+
+        }
+        
         
         //console.log(`Message received: ${data}`);
     });
@@ -32,17 +44,20 @@ document.addEventListener('DOMContentLoaded', () => {
     //we are listening for on click
     document.querySelector('#send_message').onclick = () => {
         socket.send({'msg': document.querySelector('#user_message').value, 'firstname': firstname, 'room': room });
+
+        // Clearing the input area
+        document.querySelector('#user_message').value = '';
         
     }
 
-    document.querySelector('select-room').forEach(p => {
+    document.querySelectorAll('.select-room').forEach(p => {
         p.onclick = () => {
             let newRoom = p.innerHTML;
             // Checking if the user is already in the room
             if (newRoom == room) {
-                msg = `You are already in ${room} room.`;
+                msg = `You are already in ${room} room.`
                 printSysMsg(msg);
-            }else {
+            } else {
                 leaveRoom(room);
                 joinRoom(newRoom);
                 //Update the new room
@@ -62,12 +77,16 @@ document.addEventListener('DOMContentLoaded', () => {
         socket.emit('join', {'firstname': firstname, 'room': room});
         // Clear messages
         document.querySelector('#display-message-section').innerHTML = ' '
+
+        //Autofocus on text box
+
+        document.querySelector('#user_message').focus();
     }
 
     // Print system message
 
-    function printSysMsg(msg){
-        const p = document.createElement('p');
+    function printSysMsg(msg) {
+        const p = document.createElement('p'); //paragraph tag
         p.innerHTML = msg;
         document.querySelector('#display-message-section').append(p);
     }

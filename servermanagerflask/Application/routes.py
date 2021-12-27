@@ -142,15 +142,7 @@ def servers():
 # teams
 
 
-@app.route("/teams")
-@login_required
-def teams():
 
-    teamsData = [{"teamnameID": "someServerName", "teamadminID": "Mathew",
-                  "numberofmembersID": "4", "serverID": "1234"}]
-
-    # print(teamsData)
-    return render_template("teams.html", teamsData=teamsData)
 
 # terminal
 
