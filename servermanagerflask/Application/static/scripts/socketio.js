@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const br = document.createElement('br');
         // access to the firstname
         span_firstname.innerHTML = data.firstname;
-        span_lastname.innerHTML = data.lastname;
         span_timestamp.innerHTML = data.timestamp;
         // to access the message text
         p.innerHTML = span_firstname.outerHTML+ data.msg + br.outerHTML + span_timestamp.outerHTML;
@@ -62,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function joinRoom(room) {
         socket.emit('join', {'firstname': firstname, 'room': room});
         // Clear messages
-        //document.querySelector('#display-message-section').innerHTML = ' '
+        document.querySelector('#display-message-section').innerHTML = ' '
     }
 
     // Print system message

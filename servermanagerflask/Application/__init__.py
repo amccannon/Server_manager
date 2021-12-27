@@ -25,7 +25,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 #Instantiate Flask-SocketIO
 socketio = SocketIO(app)
-ROOMS = ["support", "team_room"]
+ROOMS = ["support", "team room"]
 
 # Configuring the database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:testing1@main-database.chkovmh0wpxg.us-east-2.rds.amazonaws.com:5432/Login_info'
@@ -67,6 +67,7 @@ def message(data):
     send({'msg': data['msg'], 'firstname': data['firstname'], 'timestamp': strftime('%b-%d %I:%M %p', localtime())})
     #current_user.firstname  
 
+#-----------------------------------Joining and Leaving a Room-----------------------------
 # Joining a room
 @socketio.on('join')
 def join(data):
