@@ -5,12 +5,31 @@ from werkzeug.wrappers import request
 from Application import ROOMS, app
 from Application import models
 from flask import render_template, redirect, url_for, flash
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import *
 from passlib.hash import pbkdf2_sha256
+import psycopg2
+import psutil
+import os
+import json, random
+
 
 from Application.wtfform_fields import LoginForm, RegisterNewUser
 from flask_login import login_manager, login_user, current_user, login_required, logout_user
 
+
+# Connecting using psycopg2 to the database
+
+try: 
+    conn = psycopg2.connect(database="Login_info", user="postgres",  
+    password="testing1", host="main-database.chkovmh0wpxg.us-east-2.rds.amazonaws.com",)
+    print("connected")
+except:
+    print ("I am unable to connect to the database")
+
+cursor = conn.cursor()
+postgreSQL_select_Query = "select * from members"
+
+#----------------------------Routes-------------------------------------------------
 
 # routes from now
 
@@ -122,7 +141,7 @@ def activity_log():
 
 # -------------------------SideNav---------------------------------
 
-# servers
+###########################Servers
 
 
 @app.route("/servers")
@@ -139,12 +158,53 @@ def servers():
     # print(serverData)
     return render_template("servers.html", serverData=serverData)
 
-# teams
+@app.route("/server_display")
+@login_required
+def server_display():
+
+    cpu = psutil.cpu_percent()
+    v_memory = psutil.virtual_memory()
+    ram = psutil.virtual_memory().percent 
+    avail_ram = psutil.virtual_memory().available * 100 / psutil.virtual_memory().total
+
+    serverDataDisplay = [{"CPU_Percentage": cpu, "Memory": v_memory, "Ram_Percentage": ram, "Ram_Percentage_Available": avail_ram}]
+
+    for i in range():
+        print(cpu)
+
+    #print("The CPU usage is : ", cpu, v_memory, ram)
+    print (serverDataDisplay)
+    return render_template ("server_display.html", serverDataDisplay = serverDataDisplay)
 
 
+##############################Teams
 
 
-# terminal
+@app.route("/teams", methods=['GET','POST'])
+@login_required
+def teams():
+
+    cursor.execute(postgreSQL_select_Query)
+    print("selecting rows from members using cursor.fetchall")
+    members_all = cursor.fetchall()
+
+    #print("Print each row and it's columns values")
+    #for row in members_all:
+        #print("Id = ", row[0], )
+        #print("FirstName = ", row[1])
+        #print("Lastname  = ", row[2], "\n")
+
+    #-----Needs Work----#
+    if request.method == 'POST':
+        if request.form.get('Delete') == 'Delete':
+            cursor.execute("DELETE FROM members WHERE id = %s", id)
+        else:
+            pass # unknown
+
+    # print(teamsData)
+    return render_template("teams.html", data = members_all)
+
+#############################Terminal
 
 
 @app.route("/Jobs")

@@ -86,6 +86,9 @@ def leave(data):
     send({'msg': data['firstname'] + " has left the " + data['room'] + " room."}, room=data['room'])
 
 
+
+
+
 #t_host = "main-database.chkovmh0wpxg.us-east-2.rds.amazonaws.com"
 #t_host = "postgresql+psycopg2://main-database.chkovmh0wpxg.us-east-2.rds.amazonaws.com:5432"
 #t_port = "5432"

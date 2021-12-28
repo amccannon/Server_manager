@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+    
+{% block content %}
+
+<div class="sb-sidenav-footer">
+    <div class="small">Logged in as:</div>
+    Start Bootstrap
+</div>
+    <nav>
+        </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <h1 class="mt-4">Server Information Page</h1>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">CPU Percentage</th>
+                                <th scope="col">Memory</th>
+                                <th scope="col">Ram Percentage</th>
+                                <th scope="col">Ram Percentage Available</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                    
+                            <!-- Construct the servers 
+                            Adding the data dynamically -->
+
+                            {% for data in serverDataDisplay %}
+                            <tr>
+                                <td>{{ data["CPU_Percentage"] }}</td>
+                                <td>{{ data["Memory"] }}</td>
+                                <td>{{ data["Ram_Percentage"] }}</td>
+                                <td>{{ data["Ram_Percentage_Available"] }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                </main>
+            </div>
+</div>
+           
+{% endblock %}
