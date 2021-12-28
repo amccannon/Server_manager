@@ -11,6 +11,9 @@ import psycopg2
 import psutil
 import os
 import json, random
+import matplotlib.pyplot as plt
+import io
+import base64
 
 
 from Application.wtfform_fields import LoginForm, RegisterNewUser
@@ -167,14 +170,25 @@ def server_display():
     ram = psutil.virtual_memory().percent 
     avail_ram = psutil.virtual_memory().available * 100 / psutil.virtual_memory().total
 
-    serverDataDisplay = [{"CPU_Percentage": cpu, "Memory": v_memory, "Ram_Percentage": ram, "Ram_Percentage_Available": avail_ram}]
+    #serverDataDisplay = [{"CPU_Percentage": cpu, "Memory": v_memory, "Ram_Percentage": ram, "Ram_Percentage_Available": avail_ram}]
 
-    for i in range():
+    cpu_percent = []
+    for i in range(1,100):
+        cpu = psutil.cpu_percent()
+        cpu_percent.append(cpu)
         print(cpu)
+        i += 1
+        #data = {
+        #    "cpu percentage" : cpu_percent
+        #}
+        
 
     #print("The CPU usage is : ", cpu, v_memory, ram)
-    print (serverDataDisplay)
-    return render_template ("server_display.html", serverDataDisplay = serverDataDisplay)
+    #print (serverDataDisplay)
+    #return render_template ("server_display.html", serverDataDisplay = serverDataDisplay)
+    print(cpu_percent)
+    
+    return render_template('graph.html')
 
 
 ##############################Teams
