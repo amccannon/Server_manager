@@ -3,30 +3,93 @@
   <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
     <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <script
+			  src="https://code.jquery.com/jquery-3.6.0.min.js"
+			  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+			  crossorigin="anonymous">
+      </script>
+      <script src="https://code.highcharts.com/highcharts.js"></script>
+      <script src="https://code.highcharts.com/highcharts-more.js"></script>
+      <script src="https://code.highcharts.com/modules/exporting.js"></script>
+      <script src="https://code.highcharts.com/highcharts.js"></script>
+      <script src="https://code.highcharts.com/modules/exporting.js"></script>
+      <script src="https://code.highcharts.com/modules/export-data.js"></script>
+      <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+      <!-- Jquery Link-->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   </head>
   <body>
-      <div class="ct-chart ct-perfect-fourth"></div>
-      <script>
-          var data = {
-  // A labels array that can contain any sort of values
-  labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-  // Our series array that contains series objects or in this case series data arrays
-  series: [
-    [5, 2, 4, 2, 0]
-  ]
-};
 
-// As options we currently only set a static size of 300x200 px. We can also omit this and use aspect ratio containers
-// as you saw in the previous example
-var options = {
-  width: 300,
-  height: 200
-};
+    <!-- Cover Image  -->
+  <div class="jumbotron">
+      <h1 id="title">Welcome to Server Data</h1>
+  </div>
 
-// Create a new line chart object where as first parameter we pass in a selector
-// that is resolving to our chart container element. The Second parameter
-// is the actual data object. As a third parameter we pass in our custom options.
-new Chartist.Line('.ct-chart', data, options);
-      </script>
+  <div class="container-fluid">
+    <!-- Example row of columns -->
+    <div class="row">
+        <div class="container-fluid" id="data-container"></div>
+    </div>
+  </div>
+
+    <!-- <div class="ct-chart ct-perfect-fourth"></div> -->
+    <script>
+      var chart;
+
+      function requestData()
+        {
+            // Ajax call to get the Data from Flask
+            var requests = $.get('/server_display');
+
+            // request is complete
+            var tm = requests.done(function (result)
+            {
+
+                console.log("CPU", result.cpu);
+                var series = chart.series[0],
+                    shift = series.data.length > 20;
+
+                // add the point
+                chart.series[0].addPoint(result, true, shift);
+
+                // call it again after one second
+                setTimeout(requestData, 2000);
+
+            });
+        }
+
+        $(document).ready(function() {
+            chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'data-container',
+                    defaultSeriesType: 'spline',
+                    events: {
+                        load: requestData
+                    }
+                },
+                title: {
+                    text: 'Live CPU data'
+                },
+                xAxis: {
+                    type: 'datetime',
+                    tickPixelInterval: 150,
+                    maxZoom: 10 * 10
+                },
+                yAxis: {
+                    minPadding: 0.2,
+                    maxPadding: 0.2,
+                    title: {
+                        text: 'Value',
+                        margin: 80
+                    }
+                },
+                series: [{
+                    name: 'CPU data',
+                    data: []
+                }]
+            });
+        });
+    </script>
   </body>
 </html>

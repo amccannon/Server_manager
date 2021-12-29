@@ -1,10 +1,11 @@
 # routing
 
+from flask.helpers import make_response
 from flask_login.utils import login_user, logout_user
-from werkzeug.wrappers import request
+from werkzeug.wrappers import request, response
 from Application import ROOMS, app
 from Application import models
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, jsonify, make_response
 from flask_sqlalchemy import *
 from passlib.hash import pbkdf2_sha256
 import psycopg2
@@ -14,6 +15,8 @@ import json, random
 import matplotlib.pyplot as plt
 import io
 import base64
+from time import time
+
 
 
 from Application.wtfform_fields import LoginForm, RegisterNewUser
@@ -167,28 +170,35 @@ def server_display():
 
     cpu = psutil.cpu_percent()
     v_memory = psutil.virtual_memory()
-    ram = psutil.virtual_memory().percent 
-    avail_ram = psutil.virtual_memory().available * 100 / psutil.virtual_memory().total
+    #ram = psutil.virtual_memory().percent 
+    #avail_ram = psutil.virtual_memory().available * 100 / psutil.virtual_memory().total
 
     #serverDataDisplay = [{"CPU_Percentage": cpu, "Memory": v_memory, "Ram_Percentage": ram, "Ram_Percentage_Available": avail_ram}]
 
-    cpu_percent = []
-    for i in range(1,100):
-        cpu = psutil.cpu_percent()
-        cpu_percent.append(cpu)
-        print(cpu)
-        i += 1
+    #numbers = [1, 2, 3, 4 , 5]
+    #cpu_percent = []
+
+    #for i in range(1,100):
+    #    cpu = psutil.cpu_percent()
+    #    cpu_percent.append(cpu)
+    #    print(cpu)
+    #    i += 1
         #data = {
         #    "cpu percentage" : cpu_percent
         #}
-        
 
+    
+    cpu_all =  [time() * 2000, cpu, v_memory]
+    response = make_response(json.dumps(cpu_all))
+    response.content_type = "application/json"
+    #return response
     #print("The CPU usage is : ", cpu, v_memory, ram)
     #print (serverDataDisplay)
     #return render_template ("server_display.html", serverDataDisplay = serverDataDisplay)
-    print(cpu_percent)
+    #print(cpu_percent)
     
     return render_template('graph.html')
+    #return jsonify ({'results' : cpu_percent})
 
 
 ##############################Teams
