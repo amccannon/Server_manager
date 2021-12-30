@@ -1,95 +1,93 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-    <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
-    <script
-			  src="https://code.jquery.com/jquery-3.6.0.min.js"
-			  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-			  crossorigin="anonymous">
-      </script>
-      <script src="https://code.highcharts.com/highcharts.js"></script>
-      <script src="https://code.highcharts.com/highcharts-more.js"></script>
-      <script src="https://code.highcharts.com/modules/exporting.js"></script>
-      <script src="https://code.highcharts.com/highcharts.js"></script>
-      <script src="https://code.highcharts.com/modules/exporting.js"></script>
-      <script src="https://code.highcharts.com/modules/export-data.js"></script>
-      <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+{% from 'form_helper.html' import displayField %}
+{% extends "layout_for_login.html" %}
 
-      <!-- Jquery Link-->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  </head>
-  <body>
 
-    <!-- Cover Image  -->
-  <div class="jumbotron">
-      <h1 id="title">Welcome to Server Data</h1>
-  </div>
+{% block content %}
 
-  <div class="container-fluid">
-    <!-- Example row of columns -->
-    <div class="row">
-        <div class="container-fluid" id="data-container"></div>
-    </div>
-  </div>
+<div class="sb-sidenav-footer">
+    <div class="small">Logged in as:</div>
+    Start Bootstrap
+</div>
+    <nav>
+        </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <h1 class="mt-4">Servers Display Page</h1>
 
-    <!-- <div class="ct-chart ct-perfect-fourth"></div> -->
-    <script>
-      var chart;
+                        <tbody>
+                            <!-- Cover Image  -->
+                        <div class="jumbotron">
+                            <h1 id="title">Welcome to Server Data</h1>
+                        </div>
 
-      function requestData()
-        {
-            // Ajax call to get the Data from Flask
-            var requests = $.get('/server_display');
+                        <div class="container-fluid">
+                            <!-- Example row of columns -->
+                            <div class="row">
+                                <div class="container-fluid" id="data-container"></div>
+                            </div>
+                        </div>
 
-            // request is complete
-            var tm = requests.done(function (result)
-            {
+                            <!-- <div class="ct-chart ct-perfect-fourth"></div> -->
+                            <script>
+                            var chart;
 
-                console.log("CPU", result.cpu);
-                var series = chart.series[0],
-                    shift = series.data.length > 20;
+                            function requestData()
+                                {
+                                    // Ajax call to get the Data from Flask
+                                    var requests = $.get('/data');
 
-                // add the point
-                chart.series[0].addPoint(result, true, shift);
+                                    // request is complete
+                                    var tm = requests.done(function (result)
+                                    {
 
-                // call it again after one second
-                setTimeout(requestData, 2000);
+                                        console.log("CPU", result.cpu);
+                                        var series = chart.series[0],
+                                            shift = series.data.length > 20;
 
-            });
-        }
+                                        // add the point
+                                        chart.series[0].addPoint(result, true, shift);
 
-        $(document).ready(function() {
-            chart = new Highcharts.Chart({
-                chart: {
-                    renderTo: 'data-container',
-                    defaultSeriesType: 'spline',
-                    events: {
-                        load: requestData
-                    }
-                },
-                title: {
-                    text: 'Live CPU data'
-                },
-                xAxis: {
-                    type: 'datetime',
-                    tickPixelInterval: 150,
-                    maxZoom: 10 * 10
-                },
-                yAxis: {
-                    minPadding: 0.2,
-                    maxPadding: 0.2,
-                    title: {
-                        text: 'Value',
-                        margin: 80
-                    }
-                },
-                series: [{
-                    name: 'CPU data',
-                    data: []
-                }]
-            });
-        });
-    </script>
-  </body>
-</html>
+                                        // call it again after one second
+                                        setTimeout(requestData, 2000);
+
+                                    });
+                                }
+
+                                $(document).ready(function() {
+                                    chart = new Highcharts.Chart({
+                                        chart: {
+                                            renderTo: 'data-container',
+                                            defaultSeriesType: 'spline',
+                                            events: {
+                                                load: requestData
+                                            }
+                                        },
+                                        title: {
+                                            text: 'Live CPU data'
+                                        },
+                                        xAxis: {
+                                            type: 'datetime',
+                                            tickPixelInterval: 150,
+                                            maxZoom: 10 * 10
+                                        },
+                                        yAxis: {
+                                            minPadding: 0.2,
+                                            maxPadding: 0.2,
+                                            title: {
+                                                text: 'Value',
+                                                margin: 80
+                                            }
+                                        },
+                                        series: [{
+                                            name: 'CPU data',
+                                            data: []
+                                        }]
+                                    });
+                                });
+                            </script>
+                        </tbody>
+                    </main>
+            </div>
+    </nav>
+    
+{% endblock %}

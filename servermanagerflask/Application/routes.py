@@ -11,11 +11,12 @@ from passlib.hash import pbkdf2_sha256
 import psycopg2
 import psutil
 import os
-import json, random
+import json
 import matplotlib.pyplot as plt
 import io
 import base64
 from time import time
+from random import random
 
 
 
@@ -154,51 +155,37 @@ def activity_log():
 @login_required
 def servers():
 
-    serverData = [{"serverID": "someServerName", "nameID": "Mathew", "teamID": "The Bucaneers", "healthID": "1234"},
-                  {"serverID": "someServerName", "nameID": "Andrew",
-                      "teamID": "Flags", "healthID": "1235"},
-                  {"serverID": "someServerName", "nameID": "Andrew",
-                      "teamID": "Flags", "healthID": "1236"},
-                  {"serverID": "someServerName", "nameID": "Andrew", "teamID": "Flags", "healthID": "1237"}]
+    serverData = [{"serverID": "someServerName", "nameID": "Mathew", "teamID": "The Bucaneers", "healthID": "1234"}]
 
     # print(serverData)
     return render_template("servers.html", serverData=serverData)
 
-@app.route("/server_display")
+@app.route("/graph")
 @login_required
-def server_display():
+def graph():
+    return render_template('graph.html')
+
+@app.route('/data', methods=["GET", "POST"])
+@login_required
+def data():
+
 
     cpu = psutil.cpu_percent()
     v_memory = psutil.virtual_memory()
     #ram = psutil.virtual_memory().percent 
     #avail_ram = psutil.virtual_memory().available * 100 / psutil.virtual_memory().total
 
-    #serverDataDisplay = [{"CPU_Percentage": cpu, "Memory": v_memory, "Ram_Percentage": ram, "Ram_Percentage_Available": avail_ram}]
 
-    #numbers = [1, 2, 3, 4 , 5]
-    #cpu_percent = []
 
-    #for i in range(1,100):
-    #    cpu = psutil.cpu_percent()
-    #    cpu_percent.append(cpu)
-    #    print(cpu)
-    #    i += 1
-        #data = {
-        #    "cpu percentage" : cpu_percent
-        #}
-
-    
-    cpu_all =  [time() * 2000, cpu, v_memory]
-    response = make_response(json.dumps(cpu_all))
+    data = [time() * 1000, random() * 100]
+    response = make_response(json.dumps(data))
     response.content_type = "application/json"
-    #return response
-    #print("The CPU usage is : ", cpu, v_memory, ram)
-    #print (serverDataDisplay)
-    #return render_template ("server_display.html", serverDataDisplay = serverDataDisplay)
-    #print(cpu_percent)
+    return response
     
-    return render_template('graph.html')
+    #return render_template('graph.html')
     #return jsonify ({'results' : cpu_percent})
+
+
 
 
 ##############################Teams
