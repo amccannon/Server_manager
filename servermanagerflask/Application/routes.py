@@ -3,7 +3,7 @@
 from flask.helpers import make_response
 from flask_login.utils import login_user, logout_user
 from werkzeug.wrappers import request, response
-from Application import ROOMS, app
+from Application import ROOMS, app, check_server
 from Application import models
 from flask import render_template, redirect, url_for, flash, jsonify, make_response
 from flask_sqlalchemy import *
@@ -17,6 +17,7 @@ import io
 import base64
 from time import time
 from random import random
+
 
 
 
@@ -35,6 +36,75 @@ except:
 
 cursor = conn.cursor()
 postgreSQL_select_Query = "select * from members"
+
+#----------------------------Passing the data--------------------------------------
+
+import socket
+import ssl
+from datetime import datetime
+
+import subprocess
+import platform
+
+
+class Server():
+    def __init__(self, name, port, connection, priority):
+        self.name = name
+        self.port = port
+        self.connection = connection.lower()
+        self.priority = priority.lower()
+
+        self.history = []
+        self.alert = False
+
+    def check_connection(self):
+        msg = ""
+        success = False
+        now = datetime.now()
+
+        try:
+            if self.connection == "plain":
+                socket.create_connection((self.name, self.port), timeout=10)
+                msg = f"{self.name} is up. On port {self.port} with {self.connection}"
+                success = True
+                self.alert = False
+            elif self.connection == "ssl":
+                ssl.wrap_socket(socket.create_connection((self.name, self.port), timeout=10))
+                msg = f"{self.name} is up. On port {self.port} with {self.connection}"
+                success = True
+                self.alert = False
+            else:
+                if self.ping():
+                    msg = f"{self.name} is up. On port {self.port} with {self.connection}"
+                    success = True
+                    self.alert = False
+        except socket.timeout:
+            msg = f"server: {self.name} timeout. On port {self.port}"
+        except (ConnectionRefusedError, ConnectionResetError) as e:
+            msg = f"server: {self.name} {e}"
+        except Exception as e:
+            msg = f"No Clue??: {e}"
+
+        self.create_history(msg,success,now)
+
+    def create_history(self, msg, success, now):
+        history_max = 100
+        self.history.append((msg,success,now))
+
+        while len(self.history) > history_max:
+            self.history.pop(0)
+
+    def ping(self):
+        try:
+            output = subprocess.check_output("ping -{} 1 {}".format('n' if platform.system().lower(
+            ) == "windows" else 'c', self.name ), shell=True, universal_newlines=True)
+            if 'unreachable' in output:
+                return False
+            else:
+                return True
+        except Exception:
+                return False
+
 
 #----------------------------Routes-------------------------------------------------
 
@@ -228,14 +298,7 @@ def terminal():
 # log out
 
 
-@app.route("/alerts")
-@login_required
-def alerts():
 
-    alertsData = [{"serverID": "someServerName",
-                   "alertsID": "This server is in hight alert"}]
-
-    return render_template("alerts.html", alertsData=alertsData)
 
 #----------------------------------CHAT---------------------------------------------
 

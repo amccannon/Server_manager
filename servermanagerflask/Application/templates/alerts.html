@@ -20,6 +20,7 @@
                     <tr>
                         <th scope="col">Server</th>
                         <th scope="col">HighRisk</th>
+                        <th scope="col">History</th>
                     </tr>
                     </thead>
 
@@ -31,7 +32,8 @@
                     {% for data in alertsData %}
                     <tr>
                         <td scope='row'>{{ data["serverID"] }}</td>
-                        <td>{{ data["alertsID"] }}</td>
+                        <td>{{ data["connectionID"] }}</td>
+                        <td>{{ data["history"] }}</td>
                         <td>
                             <button>Open</button>
                         </td>
