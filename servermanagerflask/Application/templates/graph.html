@@ -15,23 +15,99 @@
                     <h1 class="mt-4">Servers Display Page</h1>
 
                         <tbody>
-                            <!-- Cover Image  -->
-                        <div class="jumbotron">
-                            <h1 id="title">Welcome to Server Data</h1>
-                        </div>
+                            <!-- Title-->
+                            <div class="jumbotron">
+                                <h1 id="title">Welcome to Server Data</h1>
+                            </div>
 
-                        <div class="container-fluid">
+                            <div class="container-fluid">
                             <!-- Example row of columns -->
                             <div class="row">
-                                <div class="container-fluid" id="data-container"></div>
+
+                                    <div class="col-5 jumbotron p-2 mx-1">
+                                        <h1 class="sensor1"> sensor1 : </h1>
+                                    </div>
+                                    <br>
+
+                                    <div class="col-5 jumbotron p-2 mx-1">
+                                        <h1 class="sensor2"> sensor2 :</h1>
+                                    </div>
+                                    <br>
+
+                                    <div class="col-5 jumbotron p-2 mx-1">
+                                        <h1 class="sensor3"> sensor3 : </h1>
+                                    </div>
+                                    <br>
+
+                                    <div class="col-5 jumbotron p-2 mx-1">
+                                        <h1 class="sensor4"> sensor4 :</h1>
+                                    </div>
+                                    <br>
+
+                                </div>
                             </div>
-                        </div>
+                                
+                                <!-- Container for CPU-->
+                                <div class="container-fluid">
+                                    <!-- Example row of columns -->
+                                    <div class="row">
+                                        <div class="container-fluid" id="data-cpu">
+                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                <br>
+                                <br>
+                                <br>
+
+                                <!-- Container for RAM-->
+                                <div class="container-fluid">
+                                    <!-- Example row of columns -->
+                                    <div class="row">
+                                        <div class="container-fluid" id="data-ram">
+                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+
+                                <!-- Container for Virtual Memory-->
+                                <div class="container-fluid">
+                                    <!-- Example row of columns -->
+                                    <div class="row">
+                                        <div class="container-fluid" id="data-v_memory">
+                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                <br>
+                                <br>
+                                <br>
+
+                                <!-- Container for Available Ram-->
+                                <div class="container-fluid">
+                                    <!-- Example row of columns -->
+                                    <div class="row">
+                                        <div class="container-fluid" id="data-avail_ram">
+                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+
+                                
+
 
                             <!-- <div class="ct-chart ct-perfect-fourth"></div> -->
                             <script>
-                            var chart;
+                                var chartCPU;
+                                var chartRAM;
+                                var chart_v_memory;
+                                var chart_avail_ram;
 
-                            function requestData()
+                                function requestData()
                                 {
                                     // Ajax call to get the Data from Flask
                                     var requests = $.get('/data');
@@ -40,23 +116,91 @@
                                     var tm = requests.done(function (result)
                                     {
 
+                                        // CPU
                                         console.log("CPU", result.cpu);
-                                        var series = chart.series[0],
-                                            shift = series.data.length > 20;
+                                        var seriesCPU = chartCPU.series[0],
+                                            shiftCPU = seriesCPU.data.length > 20;
+
+                                        
+                                        // RAM
+                                        console.log("CPU", result.ram);
+                                        var seriesRAM = chartRAM.series[0],
+                                            shiftRAM = seriesRAM.data.length > 20;
+
+                                        
+                                        // v_memory
+                                        console.log("V_Memory", result.v_memory);
+                                        var series_v_memory = chart_v_memory.series[0],
+                                            shift_v_memory = series_v_memory.data.length > 20;
+
+                                        // avail_ram
+                                        console.log("avail_ram", result.avail_ram);
+                                        var series_avail_ram = chart_avail_ram.series[0],
+                                            shift_avail_ram = series_avail_ram.data.length > 20;
+
 
                                         // add the point
-                                        chart.series[0].addPoint(result, true, shift);
+                                        // Time CPU
+                                        var data1 = [];
+                                        data1.push(result[0]);
+                                        data1.push(result[1]);
+                                        
+
+
+                                        // Add the Point
+                                        // Time RAM
+                                        var data2 = [];
+                                        data2.push(result[0]);
+                                        data2.push(result[2]);
+
+
+                                        // Add the Point
+                                        // Time v_memory
+                                        var data3 = [];
+                                        data3.push(result[0]);
+                                        data3.push(result[3]);
+
+                                        // Add the Point
+                                        // Time avail_ram
+                                        var data4 = [];
+                                        data4.push(result[0]);
+                                        data4.push(result[4]);
+
+
+                                        chartCPU.series[0].addPoint(data1, true, shiftCPU);
+
+                                        chartRAM.series[0].addPoint(data2, true, shiftRAM);
+
+                                        chart_v_memory.series[0].addPoint(data3, true, shift_v_memory);
+
+                                        chart_v_memory.series[0].addPoint(data4, true, shift_avail_ram);
+
+                                        // Display
+                                        $(".sensor1").text("");
+                                        $(".sensor1").text("CPU: " +  Math.round(data1[1]));
+
+                                        $(".sensor2").text("");
+                                        $(".sensor2").text("RAM: " +  Math.round(data2[1]));
+
+                                        $(".sensor3").text("");
+                                        $(".sensor3").text("V_Memory: " +  Math.round(data3[1]));
+
+                                        $(".sensor4").text("");
+                                        $(".sensor4").text("Available Ram: " +  Math.round(data4[1]));
+
 
                                         // call it again after one second
                                         setTimeout(requestData, 2000);
 
                                     });
                                 }
+                                
 
                                 $(document).ready(function() {
-                                    chart = new Highcharts.Chart({
+
+                                    chartCPU = new Highcharts.Chart({
                                         chart: {
-                                            renderTo: 'data-container',
+                                            renderTo: 'data-cpu',
                                             defaultSeriesType: 'spline',
                                             events: {
                                                 load: requestData
@@ -68,7 +212,7 @@
                                         xAxis: {
                                             type: 'datetime',
                                             tickPixelInterval: 150,
-                                            maxZoom: 10 * 10
+                                            maxZoom: 10 * 1000
                                         },
                                         yAxis: {
                                             minPadding: 0.2,
@@ -83,7 +227,106 @@
                                             data: []
                                         }]
                                     });
-                                });
+                                
+                                // ---------------Chart one Finished----------------
+                                    chartRAM = new Highcharts.Chart({
+                                            chart: {
+                                                renderTo: 'data-ram',
+                                                defaultSeriesType: 'spline',
+                                                events: {
+                                                    load: requestData
+                                                }
+                                            },
+                                            title: {
+                                                text: 'Live RAM data'
+                                            },
+                                            xAxis: {
+                                                type: 'datetime',
+                                                tickPixelInterval: 150,
+                                                maxZoom: 10 * 1000
+                                            },
+                                            yAxis: {
+                                                minPadding: 0.2,
+                                                maxPadding: 0.2,
+                                                title: {
+                                                    text: 'Value',
+                                                    margin: 80
+                                                }
+                                            },
+                                            series: [{
+                                                name: 'RAM data',
+                                                data: []
+                                            }]
+                                
+                                        });
+
+                                        // Chart 2 finished /////////////////////
+
+                                        chart_v_memory = new Highcharts.Chart({
+                                            chart: {
+                                                renderTo: 'data-v_memory',
+                                                defaultSeriesType: 'spline',
+                                                events: {
+                                                    load: requestData
+                                                }
+                                            },
+                                            title: {
+                                                text: 'Live Virtual Memory data'
+                                            },
+                                            xAxis: {
+                                                type: 'datetime',
+                                                tickPixelInterval: 150,
+                                                maxZoom: 10 * 1000
+                                            },
+                                            yAxis: {
+                                                minPadding: 0.2,
+                                                maxPadding: 0.2,
+                                                title: {
+                                                    text: 'Value',
+                                                    margin: 80
+                                                }
+                                            },
+                                            series: [{
+                                                name: 'Virtual Memory data',
+                                                data: []
+                                            }]
+                                
+                                        });
+
+                                        // Chart 3 finished /////////////////////
+                                        
+                                        chart_avail_ram = new Highcharts.Chart({
+                                            chart: {
+                                                renderTo: 'data-avail_ram',
+                                                defaultSeriesType: 'spline',
+                                                events: {
+                                                    load: requestData
+                                                }
+                                            },
+                                            title: {
+                                                text: 'Available Ram data'
+                                            },
+                                            xAxis: {
+                                                type: 'datetime',
+                                                tickPixelInterval: 150,
+                                                maxZoom: 10 * 1000
+                                            },
+                                            yAxis: {
+                                                minPadding: 0.2,
+                                                maxPadding: 0.2,
+                                                title: {
+                                                    text: 'Value',
+                                                    margin: 80
+                                                }
+                                            },
+                                            series: [{
+                                                name: 'Available Ram data',
+                                                data: []
+                                            }]
+                                
+                                        });
+
+                                    });
                             </script>
                         </tbody>
                     </main>

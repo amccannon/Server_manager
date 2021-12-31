@@ -172,12 +172,12 @@ def data():
 
     cpu = psutil.cpu_percent()
     v_memory = psutil.virtual_memory()
-    #ram = psutil.virtual_memory().percent 
-    #avail_ram = psutil.virtual_memory().available * 100 / psutil.virtual_memory().total
+    ram = psutil.virtual_memory().percent 
+    avail_ram = psutil.virtual_memory().available * 100 / psutil.virtual_memory().total
 
 
 
-    data = [time() * 1000, random() * 100]
+    data = [time() * 1000, cpu, ram, v_memory, avail_ram]
     response = make_response(json.dumps(data))
     response.content_type = "application/json"
     return response
